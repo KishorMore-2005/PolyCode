@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PolyCode - Code Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-section">
+        <div class="logo-icon">PC</div>
+        <div class="logo-text">
+          <h1>PolyCode</h1>
+          <p class="tagline">Paste code → Pick languages → Convert code</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="themeToggle">🌟</button>
+        <button class="clear-history-btn" id="clearHistoryBtn">
+          Clear history
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+      <!-- Source Section -->
+      <section class="source-section">
+        <div class="section-header">
+          <h2>Source</h2>
+          <div class="controls">
+            <select id="sourceLanguage" class="language-select">
+              <option value="auto" selected>Auto-detect</option>
+              <option value="Python">Python</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="TypeScript">TypeScript</option>
+              <option value="Java">Java</option>
+              <option value="C++">C++</option>
+              <option value="C">C</option>
+              <option value="Go">Go</option>
+              <option value="Ruby">Ruby</option>
+              <option value="PHP">PHP</option>
+              <option value="C#">C#</option>
+              <option value="Rust">Rust</option>
+              <option value="Kotlin">Kotlin</option>
+              <option value="Swift">Swift</option>
+              <option value="Objective-C">Objective-C</option>
+              <option value="Scala">Scala</option>
+              <option value="Perl">Perl</option>
+              <option value="Bash">Bash</option>
+              <option value="SQL">SQL</option>
+            </select>
+            <button class="icon-btn swap-btn" id="swapBtn">⇄</button>
+          </div>
+        </div>
+        <p class="section-subtitle">Paste or type code you want to convert</p>
+        <textarea
+          id="sourceCode"
+          class="code-textarea"
+          placeholder="Paste source code here..."
+          spellcheck="false"
+        ></textarea>
+        <div class="file-upload">
+          <input
+            type="file"
+            id="fileInput"
+            accept=".txt,.js,.py,.java,.cpp,.c,.go,.rb,.php,.cs,.ts,.rs,.kt,.swift,.m,.scala,.pl,.sh,.sql"
+            style="display: none"
+          />
+          <button class="upload-btn" id="uploadBtn">Choose File</button>
+          <span class="file-name" id="fileName">No file chosen</span>
+        </div>
+        <div class="tip-section">
+          <span class="tip-text"
+            >Tip: press <kbd>Ctrl+Enter</kbd> to convert</span
+          >
+          <div class="action-buttons">
+            <button class="action-btn" id="formatBtn">Format</button>
+            <button class="action-btn" id="copySourceBtn">Copy</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Target Section -->
+      <section class="target-section">
+        <div class="section-header">
+          <h2>Target</h2>
+          <div class="controls">
+            <select id="targetLanguage" class="language-select">
+              <option value="Javascript">Javascript</option>
+              <option value="Python">Python</option>
+              <option value="TypeScript">TypeScript</option>
+              <option value="Java">Java</option>
+              <option value="C++">C++</option>
+              <option value="C">C</option>
+              <option value="Go">Go</option>
+              <option value="Ruby">Ruby</option>
+              <option value="PHP">PHP</option>
+              <option value="C#">C#</option>
+              <option value="Rust">Rust</option>
+              <option value="Kotlin">Kotlin</option>
+              <option value="Swift">Swift</option>
+              <option value="Objective-C">Objective-C</option>
+              <option value="Scala">Scala</option>
+              <option value="Perl">Perl</option>
+              <option value="Bash">Bash</option>
+              <option value="SQL">SQL</option>
+            </select>
+            <button class="convert-btn" id="convertBtn">Convert</button>
+          </div>
+        </div>
+        <p class="section-subtitle">Converted code appears here</p>
+        <textarea
+          id="outputCode"
+          class="code-textarea"
+          placeholder="No result yet — press Convert"
+          spellcheck="false"
+          readonly
+        ></textarea>
+        <div class="output-actions">
+          <button class="action-btn" id="copyResultBtn">Copy result</button>
+          <button class="action-btn" id="downloadBtn">Download</button>
+          <button class="action-btn secondary" id="explainBtn">Explain</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Section -->
+    <section class="bottom-section">
+      <!-- Options Panel -->
+      <div class="options-panel">
+        <div class="panel-header">
+          <h3>Options</h3>
+          <button class="collapse-btn" id="collapseOptionsBtn">▼</button>
+        </div>
+        <div class="options-content" id="optionsContent">
+          <div class="option-item">
+            <span class="option-number">1</span>
+            <span class="option-text">Paste your code</span>
+          </div>
+          <div class="option-item">
+            <span class="option-number">2</span>
+            <span class="option-text">Select source and target languages</span>
+          </div>
+          <div class="option-item">
+            <span class="option-number">3</span>
+            <span class="option-text">Click Convert or press Ctrl+Enter</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Panel -->
+      <div class="history-panel">
+        <div class="panel-header">
+          <h3>History</h3>
+          <button class="clear-btn" id="clearBtn">Clear</button>
+        </div>
+        <div class="history-content" id="historyContent">
+          <p class="empty-state">No history yet</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none">
+      <div class="spinner"></div>
+      <p>Converting code...</p>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="toast error-toast" id="errorToast" style="display: none"></div>
+
+    <!-- Success Toast -->
+    <div
+      class="toast success-toast"
+      id="successToast"
+      style="display: none"
+    ></div>
+
+    <!-- Explanation Modal -->
+    <div id="explainModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Code Explanation</h3>
+          <button id="closeExplainBtn" class="icon-btn">✖</button>
+        </div>
+        <div class="modal-body" id="explainContent">
+          <!-- Explanation text inserted here -->
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
